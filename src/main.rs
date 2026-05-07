@@ -12,6 +12,11 @@ extern "C" fn on_sigint(_: libc::c_int) {
 }
 
 fn main() {
+    if std::env::args().any(|a| a == "--list-formats") {
+        camera::Camera::list_formats();
+        return;
+    }
+
     let start_time = time::Instant::now();
     
     unsafe {
@@ -22,11 +27,13 @@ fn main() {
     print!("\x1b[?25l"); // hide term cursor
     std::io::stdout().flush().unwrap();
     
-    let mut camera = camera::Camera::new();
+    let camera = camera::Camera::new();
     let shader = shader::Shader::new(start_time);
 
     loop {
-        shader.render(camera.capture());
-        std::io::stdout().flush().unwrap();
+        if let Some(frame) = camera.capture() {
+            shader.render(frame);
+            std::io::stdout().flush().unwrap();
+        }
     }
 }
