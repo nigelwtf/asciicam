@@ -1,0 +1,1 @@
+pub const DEFAULT_TERM_SIZE: (usize, usize) = (80, 24);
