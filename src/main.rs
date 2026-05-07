@@ -2,7 +2,7 @@ mod constants;
 mod shader;
 mod camera;
 
-use std::{thread, time, io::Write};
+use std::{time, io::Write};
 
 // restore terminal on sigint
 extern "C" fn on_sigint(_: libc::c_int) {
